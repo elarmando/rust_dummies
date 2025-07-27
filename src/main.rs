@@ -1,6 +1,8 @@
-mod palindrome;
+//mod palindrome;
+mod arrays;
 
 fn main() {
-    palindrome::main();
+    //palindrome::main();
+    arrays::main();
 }
 
