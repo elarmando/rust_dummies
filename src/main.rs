@@ -4,7 +4,9 @@
 //mod array_dynamic;
 //mod matrix;
 //mod structs;
-mod game_of_life;
+//mod game_of_life;
+mod sqrt;
+
 
 fn main() {
     //palindrome::main();
@@ -12,7 +14,8 @@ fn main() {
     //len_last_word::solve();
     //array_dynamic::main();
     //structs::main();
-    game_of_life::main();
+    //game_of_life::main();
+    sqrt::main();
 }
 
 
