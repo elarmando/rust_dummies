@@ -18,15 +18,17 @@ pub fn test_cell_dies(){
 }
 
 struct GameOfLife{
-    state: [[i32; 3];3]
+    state: [[i32; 3];3],
+    state2: Vec<Vec<i32>>
 }
 
 impl GameOfLife{
     fn new()-> GameOfLife{
         return GameOfLife{
+            state2 :   Vec::new(),
             state: [
-                [0, 0, 0],
                 [0, 1, 0],
+                [1, 1, 0],
                 [0, 0, 0]
             ]
         };
@@ -60,10 +62,25 @@ impl GameOfLife{
         let tr = row as usize;
         let tc = col as usize;
 
-        if self.state[tr][tc] == 1 {
-            if live_neigbours_count <= 0{
+        if self.state[tr][tc] == 1 { // live cell
+            if live_neigbours_count < 2{
+                //1 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
                 
                 self.state[tr][tc] = 0;
+            }
+            else if live_neigbours_count == 2 || live_neigbours_count == 3{
+                //2 Any live cell with two or three live neighbours lives on to the next generation.
+                self.state[tr][tc] = 1;
+            }
+            else if live_neigbours_count > 3 {
+                //3 Any live cell with more than three live neighbours dies, as if by overpopulation.
+                self.state[tr][tc] = 0;
+            }
+        }
+        else{//dead cell
+            if live_neigbours_count == 3{
+                //4 Any live cell with more than three live neighbours dies, as if by overpopulation.
+                self.state[tr][tc] = 1;
             }
         }
     }
