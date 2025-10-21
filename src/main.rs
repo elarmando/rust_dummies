@@ -5,6 +5,7 @@
 //mod matrix;
 //mod structs;
 mod game_of_life;
+mod math;
 //mod sqrt;
 
 
@@ -14,8 +15,10 @@ fn main() {
     //len_last_word::solve();
     //array_dynamic::main();
     //structs::main();
-    game_of_life::main();
+    //game_of_life::main();
+    //
     //sqrt::main();
+    math::main();
 }
 
 
