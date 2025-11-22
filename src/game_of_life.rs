@@ -1,3 +1,6 @@
+use rand::Rng;
+use std::{thread, time::Duration};
+
 pub fn main(){
     test_cell_dies();
 }
@@ -6,32 +9,58 @@ pub fn test_cell_dies(){
     /*
     Any live cell with fewer than two live neighbours dies, as if by underpopulation.
     */
-    let mut game = GameOfLife::new();
+    let mut game = GameOfLife::new(50);
+    game.init();
 
-    println!("current state");
-    game.print();
-    game.evolve();
+    while(true){
+        game.clear();
+        game.print();
+        game.evolve();
 
-    println!("after evolve"); 
-    game.print();
+         thread::sleep(Duration::from_millis(500));
+    }
 
 }
 
 struct GameOfLife{
-    state: [[i32; 3];3],
-    state2: Vec<Vec<i32>>
+    state: Vec<Vec<i32>>
 }
 
 impl GameOfLife{
-    fn new()-> GameOfLife{
+    fn new(size: usize)-> GameOfLife{
+        let mut state:  Vec<Vec<i32>> = Vec::new();
+
+        for i in 0..size{
+            state.push(Vec::new());
+
+            for _j in 0..size{
+                state[i].push(1);
+            }
+        }
+
         return GameOfLife{
-            state2 :   Vec::new(),
-            state: [
-                [0, 1, 0],
-                [1, 1, 0],
-                [0, 0, 0]
-            ]
+            state :   state
         };
+    }
+
+    fn init(&mut self){
+        let cols = self.get_cols() as i32;
+        let rows = self.get_rows() as i32;
+
+        for c in 0..cols{
+            for r in 0..rows{
+                 let num = rand::thread_rng().gen_range(0..100);
+                 let row = r as usize;
+                 let col = c as usize;
+
+                 if num <= 49{
+                    self.state[row][col] = 0;
+                 }
+                 else{
+                    self.state[row][col] = 1;
+                 }
+            }
+        }
     }
 
     fn get_rows(&self)-> usize{
@@ -125,6 +154,10 @@ impl GameOfLife{
         return true;
     }
 
+    fn clear(&self){
+         print!("\x1B[2J\x1B[1;1H");
+    }
+
     fn print(&self){
         let cols = self.get_cols();
         let rows = self.get_rows();
@@ -132,7 +165,12 @@ impl GameOfLife{
         for r in 0..rows{
             for c in 0..cols{
                  let value = self.state[r][c];
-                print!("{value},");
+
+                 if value == 1{
+                    print!("#");
+                 }else{
+                    print!(" ");
+                 }
             }
 
              println!("");
